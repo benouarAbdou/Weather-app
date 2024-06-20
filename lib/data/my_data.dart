@@ -1,1 +1,1 @@
-String API_KEY = "api_key";
+String API_KEY = "api";

@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        title: "my weather",
         debugShowCheckedModeBanner: false,
         home: FutureBuilder(
             future: _determinePosition(),
