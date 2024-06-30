@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:weather/weather.dart';
 import 'package:weather_app/bloc/weather_bloc_bloc.dart';
+import 'package:weather_app/components/barChart.dart';
 
 void main() {
   runApp(const MyApp());
@@ -332,69 +332,6 @@ class _MyHomePageState extends State<MyHomePage> {
                             )
                           ],
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(children: [
-                              Image.asset(
-                                'assets/13.png',
-                                scale: 8,
-                              ),
-                              const SizedBox(width: 5),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Temp Max',
-                                    style: TextStyle(
-                                        color: isMorning()
-                                            ? Colors.black
-                                            : Colors.white,
-                                        fontWeight: FontWeight.w300),
-                                  ),
-                                  const SizedBox(height: 3),
-                                  Text(
-                                    "${state.weather.tempMax!.celsius!.round()} °C",
-                                    style: TextStyle(
-                                        color: isMorning()
-                                            ? Colors.black
-                                            : Colors.white,
-                                        fontWeight: FontWeight.w700),
-                                  ),
-                                ],
-                              )
-                            ]),
-                            Row(children: [
-                              Image.asset(
-                                'assets/14.png',
-                                scale: 8,
-                              ),
-                              const SizedBox(width: 5),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Temp Min',
-                                    style: TextStyle(
-                                        color: isMorning()
-                                            ? Colors.black
-                                            : Colors.white,
-                                        fontWeight: FontWeight.w300),
-                                  ),
-                                  const SizedBox(height: 3),
-                                  Text(
-                                    "${state.weather.tempMin!.celsius!.round()} °C",
-                                    style: TextStyle(
-                                        color: isMorning()
-                                            ? Colors.black
-                                            : Colors.white,
-                                        fontWeight: FontWeight.w700),
-                                  ),
-                                ],
-                              )
-                            ]),
-                          ],
-                        ),
                         const SizedBox(
                           height: 5,
                         ),
@@ -607,126 +544,6 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-}
-
-Widget buildBarChart(List<Weather> forecast, context) {
-  LinearGradient barsGradient = const LinearGradient(
-    colors: [Colors.greenAccent, Colors.blueAccent],
-    begin: Alignment.bottomCenter,
-    end: Alignment.topCenter,
-  );
-
-  double maxTemp = forecast
-      .map((weather) => weather.temperature!.celsius!)
-      .reduce((a, b) => a > b ? a : b);
-  double minTemp = forecast
-      .map((weather) => weather.temperature!.celsius!)
-      .reduce((a, b) => a < b ? a : b);
-
-  print(forecast);
-  return SingleChildScrollView(
-    scrollDirection: Axis.horizontal,
-    child: SizedBox(
-      width: MediaQuery.of(context).size.width, // Take all available width
-
-      child: BarChart(
-        BarChartData(
-          barTouchData: BarTouchData(
-            enabled: true,
-            touchTooltipData: BarTouchTooltipData(
-              fitInsideHorizontally: true,
-              fitInsideVertically: true,
-              getTooltipColor: (group) => Colors.white,
-              getTooltipItem: (
-                BarChartGroupData group,
-                int groupIndex,
-                BarChartRodData rod,
-                int rodIndex,
-              ) {
-                return BarTooltipItem(
-                  "${rod.toY.round()}° at ${DateFormat('jm').format(forecast[groupIndex].date!)}",
-                  const TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                );
-              },
-            ),
-          ),
-          groupsSpace: 5,
-          gridData: const FlGridData(
-              show: true, horizontalInterval: 4, verticalInterval: 8),
-          titlesData: FlTitlesData(
-            bottomTitles: AxisTitles(
-              sideTitles: SideTitles(
-                showTitles: true,
-                getTitlesWidget: (value, meta) {
-                  var style = TextStyle(
-                    color: isMorning() ? Colors.black : Colors.white,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 12,
-                  );
-
-                  int index = value.toInt();
-                  if (index % 8 == 0 && index < forecast.length) {
-                    return Text(
-                      DateFormat('EEE').format(forecast[index].date!),
-                      style: style,
-                    );
-                  }
-
-                  return Container(); // Return an empty container for non-matching indices
-                },
-              ),
-            ),
-            leftTitles: AxisTitles(
-              sideTitles: SideTitles(
-                showTitles: true,
-                getTitlesWidget: (value, meta) {
-                  var style = TextStyle(
-                    color: isMorning() ? Colors.black : Colors.white,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 12,
-                  );
-                  if (value == maxTemp + 2) {
-                    return Container(); // Avoid showing the max value twice
-                  }
-                  return Text(value.toInt().toString(), style: style);
-                },
-              ),
-            ),
-            topTitles: const AxisTitles(
-              sideTitles: SideTitles(showTitles: false),
-            ),
-            rightTitles: const AxisTitles(
-              sideTitles: SideTitles(showTitles: false),
-            ),
-          ),
-          borderData: FlBorderData(
-            show: false,
-          ),
-
-          minY: minTemp - 2,
-          maxY: maxTemp + 2, // Adjust based on temperature range
-          barGroups: forecast.asMap().entries.map((entry) {
-            int idx = entry.key;
-            Weather weather = entry.value;
-            return BarChartGroupData(
-              barsSpace: 50,
-              x: idx,
-              barRods: [
-                BarChartRodData(
-                  gradient: barsGradient,
-                  toY: weather.temperature!.celsius!.round().toDouble(),
-                  width: 8,
-                  borderRadius: BorderRadius.circular(5),
-                ),
-              ],
-            );
-          }).toList(),
-        ),
-      ),
-    ),
-  );
 }
 
 bool isMorning() {
