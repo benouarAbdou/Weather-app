@@ -43,35 +43,6 @@ The project follows a modular structure:
   - `components/`: Reusable UI components.
   - `data/`: Data-related files, including API keys.
 
-## Setup and Installation
-
-1. Clone the repository:
-   ```
-   git clone https://github.com/your-username/flutter-weather-app.git
-   ```
-
-2. Navigate to the project directory:
-   ```
-   cd flutter-weather-app
-   ```
-
-3. Install dependencies:
-   ```
-   flutter pub get
-   ```
-
-4. Set up your OpenWeatherMap API key:
-   - Create a file `lib/data/my_data.dart`
-   - Add your API key:
-     ```dart
-     const String API_KEY = 'your_api_key_here';
-     ```
-
-5. Run the app:
-   ```
-   flutter run
-   ```
-
 ## Usage
 
 Upon launching the app:
