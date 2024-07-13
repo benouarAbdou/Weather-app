@@ -94,7 +94,7 @@ This project is open-source and available under the [MIT License](LICENSE).
 
 ## Acknowledgements
 
-- Original tutorial by [Mitch Koko](https://www.youtube.com/watch?v=MMq4wkeHkPc)
+- Original tutorial by [Romain Girou](https://www.youtube.com/watch?v=MMq4wkeHkPc)
 - OpenWeatherMap for providing the weather data API
 - Flutter and Dart teams for their excellent framework and language
 
