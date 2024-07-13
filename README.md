@@ -2,7 +2,7 @@
 
 ## Overview
 
-This Flutter Weather App is a comprehensive mobile application that provides real-time weather information and forecasts. Based on the tutorial video by [Mitch Koko](https://www.youtube.com/watch?v=MMq4wkeHkPc), this project has been expanded with additional features and optimizations.
+This Flutter Weather App is a comprehensive mobile application that provides real-time weather information and forecasts. Based on the tutorial video by [Romain Girou](https://www.youtube.com/watch?v=MMq4wkeHkPc), this project has been expanded with additional features and optimizations.
 
 ## Features
 
